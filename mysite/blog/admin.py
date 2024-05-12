@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Post, Topic
+from .models import Post, Topic, Profile
 
 
 @admin.register(Topic)
@@ -19,3 +19,5 @@ class PostAdmin(admin.ModelAdmin):
         'status'
     )
 admin.site.register(Post, PostAdmin)
+
+admin.site.register(Profile)

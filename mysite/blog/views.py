@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.views.generic.base import TemplateView
 from . import models
 from django.contrib.auth import authenticate, login, logout
-from .forms import SignupForm, LoginForm
+from .forms import SignupForm, LoginForm, ProfileForm
 
 class HomeView(TemplateView):
     """views for the home.html"""
@@ -45,3 +45,21 @@ def user_login(request):
 def user_logout(request):
     logout(request)
     return redirect('login')
+
+def profile(request):
+    if request.user.is_authenticated:
+        user_posts =models.Post.objects.filter(author=request.user)
+        user_profile = models.Profile.objects.get(user = request.user)
+        return render(request, 'blog/profile.html', {'user_posts': user_posts, 'user_profile': user_profile})
+
+def edit_profile(request):
+    if request.user.is_authenticated:
+        user_profile = models.Profile.objects.get(user = request.user)
+        if request.method == "POST":
+            form = ProfileForm(request.POST, request.FILES, instance=user_profile)
+            if form.is_valid():
+                form.save()
+                return redirect('edit_profile')
+        else:
+            form = ProfileForm(instance=user_profile)
+        return render(request, 'blog/edit.html', {'form':form})

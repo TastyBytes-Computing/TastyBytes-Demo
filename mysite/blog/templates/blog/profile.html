@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<body>
+    <div class="title">
+        <h1>{{user.username}}</h1>
+        <img src="../media/{{user_profile.avatar}}" width = 200 height = 200>
+        <h3>Bio:</h3>
+        <p>{{user_profile.bio}}</p>
+        <a href="{%url 'edit_profile'%}"><button>Edit Profile</button></a>
+    </div>
+    <section>
+        {% if user_posts|length == 0 %}
+        <h3>No posts.</h3>
+        {%else%}
+        {% for post in user_posts %}
+        <article>
+            <h2>{{ post.title }}</h2>
+            <em> {{ post.updated|timesince }} ago</em>
+            {{ post.content|linebreaks }}
+        </article>
+        <hr>
+        {% endfor %}
+        {% endif %}
+    </section>
+</body>
+</html>
