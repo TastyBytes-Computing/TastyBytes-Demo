@@ -51,6 +51,8 @@ def profile(request):
         user_posts =models.Post.objects.filter(author=request.user)
         user_profile = models.Profile.objects.get(user = request.user)
         return render(request, 'blog/profile.html', {'user_posts': user_posts, 'user_profile': user_profile})
+    else:
+        return redirect('login')
 
 def edit_profile(request):
     if request.user.is_authenticated:
@@ -63,3 +65,5 @@ def edit_profile(request):
         else:
             form = ProfileForm(instance=user_profile)
         return render(request, 'blog/edit.html', {'form':form})
+    else:
+        return redirect('login')
